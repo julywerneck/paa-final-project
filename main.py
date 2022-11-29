@@ -2,9 +2,37 @@ from graphics import *
 import random
 
 
-def createPolygon(x1, y1, x2, y2, x3, y3, x4, y4):
-    return Polygon(Point(x1, y1), Point(x2, y2),
-                   Point(x3, y3), Point(x4, y4))
+"""
+Constantes
+"""
+TOP_Y = 20
+BOTTOM_Y = 120
+
+
+"""
+Cria Poligono
+x1,x2,x3 -> coordenadas de entrada
+limT -> coordenada limite de X TOP
+    X superior direito do Poly 
+    caso tecido vazio, 0
+limB -> coordenada limite de X BOTTOM
+    X inferior direito do Poly
+    caso tecido vazio, 0
+"""
+def createPolygon(x1, x2, x3, limT, limB):
+    if x3 > 0:
+        p1 = Point(limT,TOP_Y)
+        p2 = Point(p1.getX() + x1,TOP_Y)
+        p4 = Point(limB + x3, BOTTOM_Y)
+        p3 = Point(p4.getX() + x2, BOTTOM_Y)
+    elif x3 < 0:
+        x3 = abs(x3)
+        p1 = Point(limT + x3, TOP_Y)
+        p2 = Point(p1.getX() + x1,TOP_Y)
+        p4 = Point(limB, BOTTOM_Y)
+        p3 = Point(p4.getX() + x3 + x2, BOTTOM_Y)
+    
+    return Polygon(p1,p2,p3,p4)
 
 
 def getRepresentations(poly):
@@ -39,20 +67,17 @@ def readInput():
 '''
 TODO:
     - printar o poly B
-    - cálculo do disperdício de tecido (?)
+    - cálculo do disperdício de tecido 
+        area do retangulo - area dos polys
 '''
 def Questao1(rect,win):
     x1a, x2a, x3a = input().split(' ')
     # x1b, x2b, x3b = input().split(' ')
     
-    if (float(x3a) > 0):
-        poly = createPolygon(1, 20,
-                             1+float(x1a), 20,
-                             1+float(x3a)+float(x2a), 120,
-                             1+float(x3a), 120) 
-        poly.setFill(color_rgb(255,0,255))
-        win.flush()
-        poly.draw(win)
+    poly = createPolygon(float(x1a), float(x2a), float(x3a), 0, 0) 
+    poly.setFill(color_rgb(255,0,255))
+    win.flush()
+    poly.draw(win)
         
     return 0
 
@@ -67,12 +92,12 @@ def main():
     rect.setOutline(color_rgb(0, 100, 0))
     rect.draw(win)
     
-    # Questao1(rect,win)
+    Questao1(rect,win)
     
-    poly = createPolygon(20, 20, 60, 20, 80, 120, 10, 120)
-    poly.setFill(color_rgb(255, 0, 255))
-    getRepresentations(poly)
-    poly.draw(win)
+    # poly = createPolygon(20, 20, 60, 20, 80, 120, 10, 120)
+    # poly.setFill(color_rgb(255, 0, 255))
+    # getRepresentations(poly)
+    # poly.draw(win)
     win.getMouse()
     win.close()
 
