@@ -1,13 +1,20 @@
 from graphics import *
-import random
+import random as rd
+from Trapezium import Trapezium
 
+"""
+TODO :
+    -> Arrumar bug que o trapezio fica um pouco maior que o outline do retangulo
+    -> função desperdício de tecido
+    -> função força bruta
+"""
 
 """
 Constantes
 """
 TOP_Y = 20
 BOTTOM_Y = 120
-
+HEIGHT = 100
 
 """
 Cria Poligono
@@ -21,7 +28,7 @@ limB -> coordenada limite de X BOTTOM
 """
 def createPolygon(x1, x2, x3, limT, limB):
     if x3 > 0:
-        p1 = Point(limT,TOP_Y)
+        p1 = Point(limT,TOP_Y - 1)
         p2 = Point(p1.getX() + x1,TOP_Y)
         p4 = Point(limB + x3, BOTTOM_Y)
         p3 = Point(p4.getX() + x2, BOTTOM_Y)
@@ -39,6 +46,8 @@ def getRepresentations(poly):
     topLenght = poly.getPoints()[1].getX() - poly.getPoints()[0].getX()
     print(topLenght)
 
+def getRandomColor():
+    return color_rgb(rd.randint(0,255), rd.randint(0,255), rd.randint(0,255))
 
 '''
 Cria retangulo no centro da tela
@@ -64,40 +73,68 @@ def readInput():
         coords.append(input().split(' '))
     return coords
 
-'''
-TODO:
-    - printar o poly B
-    - cálculo do disperdício de tecido 
-        area do retangulo - area dos polys
-'''
-def Questao1(rect,win):
+def Questao1(win):
     x1a, x2a, x3a = input().split(' ')
-    # x1b, x2b, x3b = input().split(' ')
+    x1b, x2b, x3b = input().split(' ')
     
-    poly = createPolygon(float(x1a), float(x2a), float(x3a), 0, 0) 
+    # Calculo primeiro trapezio
+    poly = createPolygon(float(x1a), float(x2a), float(x3a), 0, 0)
+    first_x = min(poly.getPoints()[0].getX(), poly.getPoints()[3].getX())
     poly.setFill(color_rgb(255,0,255))
+    print("PRIMEIRO TRAPEZIO")
+    print(poly.getPoints())
+    limT = poly.getPoints()[1].getX() # P2 do trapezio
+    limB = poly.getPoints()[2].getX() # p3 do trapezio
+    print("LIMITE TOP " + str(limT))
+    print("LIMITE BOTTOM " + str(limB))
+    trap1 = Trapezium(poly) 
+    
+    
+    # calcula segundo trapezio
+    poly = createPolygon(float(x1b), float(x2b), float(x3b), limT, limB)
+    last_x = max(poly.getPoints()[1].getX(), poly.getPoints()[2].getX())
+    poly.setFill(getRandomColor())
+    print("SEGUNDO TRAPEZIO")
+    print(poly.getPoints())
+    limT = poly.getPoints()[1].getX()
+    limB = poly.getPoints()[2].getX()
+    print("LIMITE TOP " + str(limT))
+    print("LIMITE BOTTOM " + str(limB))
+    trap2 = Trapezium(poly)
+    
+    # cria o tecido
+    width = last_x - first_x
+    print("LARGURA TECIDO "+str(width))
+    rect = createRectangle(width, TOP_Y)
+    rect.setOutline(color_rgb(0,100,0))
+    rect.draw(win)
     win.flush()
-    poly.draw(win)
-        
+    trap1.poly.draw(win)
+    trap2.poly.draw(win)
+
     return 0
 
+
+limT = 0
+limB = 0
 
 def main():
     
     # coords = readInput()
 
     win = GraphWin("My Window", 500, 500)
-    rect = createRectangle(500, 20)
+    # rect = createRectangle(500, 20)
     win.setBackground(color_rgb(0, 0, 0))
-    rect.setOutline(color_rgb(0, 100, 0))
-    rect.draw(win)
+    # rect.setOutline(color_rgb(0, 100, 0))
+    # rect.draw(win)
     
-    Questao1(rect,win)
+    Questao1(win)
     
     # poly = createPolygon(20, 20, 60, 20, 80, 120, 10, 120)
     # poly.setFill(color_rgb(255, 0, 255))
     # getRepresentations(poly)
     # poly.draw(win)
+    
     win.getMouse()
     win.close()
 
