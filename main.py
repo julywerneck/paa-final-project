@@ -1,6 +1,7 @@
 from graphics import *
 import random as rd
 from Trapezium import Trapezium
+from itertools import permutations
 
 """
 TODO :
@@ -16,38 +17,31 @@ TOP_Y = 20
 BOTTOM_Y = 120
 HEIGHT = 100
 
-"""
-Cria Poligono
-x1,x2,x3 -> coordenadas de entrada
-limT -> coordenada limite de X TOP
-    X superior direito do Poly 
-    caso tecido vazio, 0
-limB -> coordenada limite de X BOTTOM
-    X inferior direito do Poly
-    caso tecido vazio, 0
-"""
-def createPolygon(x1, x2, x3, limT, limB):
-    if x3 > 0:
-        p1 = Point(limT,TOP_Y - 1)
-        p2 = Point(p1.getX() + x1,TOP_Y)
-        p4 = Point(limB + x3, BOTTOM_Y)
-        p3 = Point(p4.getX() + x2, BOTTOM_Y)
-    elif x3 < 0:
-        x3 = abs(x3)
-        p1 = Point(limT + x3, TOP_Y)
-        p2 = Point(p1.getX() + x1,TOP_Y)
-        p4 = Point(limB, BOTTOM_Y)
-        p3 = Point(p4.getX() + x3 + x2, BOTTOM_Y)
-    
-    return Polygon(p1,p2,p3,p4)
-
 
 def getRepresentations(poly):
     topLenght = poly.getPoints()[1].getX() - poly.getPoints()[0].getX()
     print(topLenght)
 
-def getRandomColor():
-    return color_rgb(rd.randint(0,255), rd.randint(0,255), rd.randint(0,255))
+
+"""
+Calcula desperdício de tecido 
+    rect_area -> area do tecido utilizado
+    traps -> lista contendo os trapezios no tecido
+    return <- area do tecido - area dos trapezios 
+"""
+def calcDesperdicio(rect_area, traps):
+    area_traps = 0
+    for i in traps:
+        area_traps += i.getArea()
+  
+    return rect_area - area_traps
+
+"""
+Calcula todas as possíveis ordens das peças
+"""
+def calcPermutacoes(p):
+   return permutations(p) 
+    
 
 '''
 Cria retangulo no centro da tela
@@ -74,44 +68,54 @@ def readInput():
     return coords
 
 def Questao1(win):
-    x1a, x2a, x3a = input().split(' ')
-    x1b, x2b, x3b = input().split(' ')
+    coords = []
+    coords.append(input().split(' '))
+    coords.append(input().split(' '))
+    desp = []
+    ordem = []
+    widths = []
     
-    # Calculo primeiro trapezio
-    poly = createPolygon(float(x1a), float(x2a), float(x3a), 0, 0)
-    first_x = min(poly.getPoints()[0].getX(), poly.getPoints()[3].getX())
-    poly.setFill(color_rgb(255,0,255))
-    print("PRIMEIRO TRAPEZIO")
-    print(poly.getPoints())
-    limT = poly.getPoints()[1].getX() # P2 do trapezio
-    limB = poly.getPoints()[2].getX() # p3 do trapezio
-    print("LIMITE TOP " + str(limT))
-    print("LIMITE BOTTOM " + str(limB))
-    trap1 = Trapezium(poly) 
+    permuts = calcPermutacoes(list(range(len(coords))))
+    permuts = list(permuts)
     
+    for i in permuts: # possibilidades
+        limT = 0 
+        limB = 0
+        first_x = 0 
+        last_x = 0 
+        width = 0
+        traps = []
+        print(i)
+        for index,j in enumerate(list(i)):# calcula os traps
+            x1,x2,x3 = coords[j][0], coords[j][1], coords[j][2]
+            # cria o trapezio
+            traps.append( Trapezium(float(x1),float(x2),float(x3),limT, limB) ) 
+            # define o primeiro e ultimo X do tecido
+            if index == 0:
+                first_x = min(traps[index].poly.getPoints()[0].getX(), traps[index].poly.getPoints()[3].getX()) 
+            elif index == len(coords)-1:
+                last_x = max(traps[index].poly.getPoints()[1].getX(), traps[index].poly.getPoints()[2].getX())
+            # define os limites TOP e BOTTOM de X    
+            limT = traps[index].poly.getPoints()[1].getX() 
+            limB = traps[index].poly.getPoints()[2].getX() 
+        width = last_x - first_x
+        desp.append( calcDesperdicio(float(width*HEIGHT),traps))
+        ordem.append(traps)
+        widths.append(width)
     
-    # calcula segundo trapezio
-    poly = createPolygon(float(x1b), float(x2b), float(x3b), limT, limB)
-    last_x = max(poly.getPoints()[1].getX(), poly.getPoints()[2].getX())
-    poly.setFill(getRandomColor())
-    print("SEGUNDO TRAPEZIO")
-    print(poly.getPoints())
-    limT = poly.getPoints()[1].getX()
-    limB = poly.getPoints()[2].getX()
-    print("LIMITE TOP " + str(limT))
-    print("LIMITE BOTTOM " + str(limB))
-    trap2 = Trapezium(poly)
-    
-    # cria o tecido
-    width = last_x - first_x
-    print("LARGURA TECIDO "+str(width))
-    rect = createRectangle(width, TOP_Y)
+    print("desps")
+    print(desp)
+    print("widths")
+    print(widths)
+    index_best_order = desp.index(min(desp))
+    print("MENOR DESPERDÍCIO DE TECIDO -->>"+str(index_best_order))
+    print(desp[index_best_order])
+    rect = createRectangle(widths[index_best_order], TOP_Y)
     rect.setOutline(color_rgb(0,100,0))
     rect.draw(win)
     win.flush()
-    trap1.poly.draw(win)
-    trap2.poly.draw(win)
-
+    for i in range(len(ordem[index_best_order])):
+        ordem[index_best_order][i].poly.draw(win)
     return 0
 
 
@@ -121,7 +125,10 @@ limB = 0
 def main():
     
     # coords = readInput()
-
+    # a = list(range(len(coords)))
+    # pl = calcPermutacoes(a)
+    # print(list(pl))
+        
     win = GraphWin("My Window", 500, 500)
     # rect = createRectangle(500, 20)
     win.setBackground(color_rgb(0, 0, 0))
