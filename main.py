@@ -5,9 +5,9 @@ from itertools import permutations
 
 """
 TODO :
+    -> algoritmo de permutacoes !!
     -> Arrumar bug que o trapezio fica um pouco maior que o outline do retangulo
-    -> função desperdício de tecido
-    -> função força bruta
+    -> classe para atual ordem de peças (?)
 """
 
 """
@@ -40,7 +40,7 @@ def calcDesperdicio(rect_area, traps):
 Calcula todas as possíveis ordens das peças
 """
 def calcPermutacoes(p):
-   return permutations(p) 
+    return list(permutations(p)) 
     
 
 '''
@@ -67,42 +67,47 @@ def readInput():
         coords.append(input().split(' '))
     return coords
 
-def Questao1(win):
-    coords = []
-    coords.append(input().split(' '))
-    coords.append(input().split(' '))
-    desp = []
-    ordem = []
-    widths = []
+'''
+Calcula posição dos trapezios 
+considerando um tecido vazio
+    traps -> lista de coordenadas dos traps
+    return <- desperdício de tecido, 
+            ordem dos trapezios,
+            largura necessária para atual ordem de peças
+'''
+def calcTrapezios(traps):
+    limT = 0 
+    limB = 0
+    first_x = 0 
+    last_x = 0 
+    trap_order = []
+    for i,x in enumerate(traps):
+        x1,x2,x3 = x[0], x[1], x[2]
+        t = Trapezium(float(x1),float(x2),float(x3),limT, limB)
+        trap_order.append(t)
+        if i == 0:
+            first_x = min(t.poly.getPoints()[0].getX(), t.poly.getPoints()[3].getX()) 
+        elif i == len(traps) - 1:
+            last_x = max(t.poly.getPoints()[1].getX(), t.poly.getPoints()[2].getX())
+        limT = t.poly.getPoints()[1].getX() 
+        limB = t.poly.getPoints()[2].getX() 
+        
+    w = last_x - first_x
+    return calcDesperdicio(float(w*HEIGHT),trap_order),trap_order,w
+
+def bruteForce(win,coords):
+    desp = [] # desperdícios
+    ordem = [] # ordem de peças
+    widths = [] # larguras
     
-    permuts = calcPermutacoes(list(range(len(coords))))
-    permuts = list(permuts)
+    permuts = calcPermutacoes(coords)
     
     for i in permuts: # possibilidades
-        limT = 0 
-        limB = 0
-        first_x = 0 
-        last_x = 0 
-        width = 0
-        traps = []
-        print(i)
-        for index,j in enumerate(list(i)):# calcula os traps
-            x1,x2,x3 = coords[j][0], coords[j][1], coords[j][2]
-            # cria o trapezio
-            traps.append( Trapezium(float(x1),float(x2),float(x3),limT, limB) ) 
-            # define o primeiro e ultimo X do tecido
-            if index == 0:
-                first_x = min(traps[index].poly.getPoints()[0].getX(), traps[index].poly.getPoints()[3].getX()) 
-            elif index == len(coords)-1:
-                last_x = max(traps[index].poly.getPoints()[1].getX(), traps[index].poly.getPoints()[2].getX())
-            # define os limites TOP e BOTTOM de X    
-            limT = traps[index].poly.getPoints()[1].getX() 
-            limB = traps[index].poly.getPoints()[2].getX() 
-        width = last_x - first_x
-        desp.append( calcDesperdicio(float(width*HEIGHT),traps))
-        ordem.append(traps)
-        widths.append(width)
-    
+        d,o,w = calcTrapezios(list(i))
+        desp.append(d)
+        ordem.append(o)
+        widths.append(w)
+        
     print("desps")
     print(desp)
     print("widths")
@@ -116,31 +121,22 @@ def Questao1(win):
     win.flush()
     for i in range(len(ordem[index_best_order])):
         ordem[index_best_order][i].poly.draw(win)
+     
+    return 0
+
+def Questao1(win):
+    coords = []
+    coords.append(input().split(' '))
+    coords.append(input().split(' '))
+    bruteForce(win,coords)   
     return 0
 
 
-limT = 0
-limB = 0
-
 def main():
-    
-    # coords = readInput()
-    # a = list(range(len(coords)))
-    # pl = calcPermutacoes(a)
-    # print(list(pl))
-        
     win = GraphWin("My Window", 500, 500)
-    # rect = createRectangle(500, 20)
     win.setBackground(color_rgb(0, 0, 0))
-    # rect.setOutline(color_rgb(0, 100, 0))
-    # rect.draw(win)
     
     Questao1(win)
-    
-    # poly = createPolygon(20, 20, 60, 20, 80, 120, 10, 120)
-    # poly.setFill(color_rgb(255, 0, 255))
-    # getRepresentations(poly)
-    # poly.draw(win)
     
     win.getMouse()
     win.close()
