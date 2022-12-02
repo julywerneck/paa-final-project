@@ -1,21 +1,12 @@
 from graphics import *
-import random as rd
 from Trapezium import Trapezium
-from itertools import permutations
+from utils import *
 
 """
 TODO :
-    -> algoritmo de permutacoes !!
     -> Arrumar bug que o trapezio fica um pouco maior que o outline do retangulo
     -> classe para atual ordem de peças (?)
 """
-
-"""
-Constantes
-"""
-TOP_Y = 20
-BOTTOM_Y = 120
-HEIGHT = 100
 
 
 def getRepresentations(poly):
@@ -40,8 +31,21 @@ def calcDesperdicio(rect_area, traps):
 Calcula todas as possíveis ordens das peças
 """
 def calcPermutacoes(p):
-    return list(permutations(p)) 
     
+    if len(p) == 0:
+        return []
+    elif len(p) == 1:
+        return [p]
+    
+    _p = []
+    
+    for i in range(len(p)):
+        aux = p[i] 
+        resto_p = p[:i] + p[i+1:]
+        for j in calcPermutacoes(resto_p):
+            _p.append([aux] + j)
+    
+    return _p    
 
 '''
 Cria retangulo no centro da tela
@@ -95,28 +99,38 @@ def calcTrapezios(traps):
     w = last_x - first_x
     return calcDesperdicio(float(w*HEIGHT),trap_order),trap_order,w
 
+"""
+Algoritmo de Força bruta
+    win -> tela do programa
+    coords -> lista de coordenadas recebidas
+"""
 def bruteForce(win,coords):
     desp = [] # desperdícios
     ordem = [] # ordem de peças
     widths = [] # larguras
     
-    permuts = calcPermutacoes(coords)
+    permuts = [] 
+    for p in calcPermutacoes(coords):
+        permuts.append(p)
+        
+    if DEBUG:
+        print(f'LISTA DE PERMUTAÇÕES \n {permuts} ')
     
     for i in permuts: # possibilidades
-        d,o,w = calcTrapezios(list(i))
+        d,o,w = calcTrapezios(i)
         desp.append(d)
         ordem.append(o)
         widths.append(w)
-        
-    print("desps")
-    print(desp)
-    print("widths")
-    print(widths)
+    
+    if DEBUG:    
+        print("desps")
+        print(desp)
+        print("widths")
+        print(widths)
     index_best_order = desp.index(min(desp))
-    print("MENOR DESPERDÍCIO DE TECIDO -->>"+str(index_best_order))
-    print(desp[index_best_order])
+    print(f'MENOR DESPERDÍCIO DE TECIDO -->> {desp[index_best_order]}')
     rect = createRectangle(widths[index_best_order], TOP_Y)
-    rect.setOutline(color_rgb(0,100,0))
+    rect.setOutline(VERDE)
     rect.draw(win)
     win.flush()
     for i in range(len(ordem[index_best_order])):
@@ -131,12 +145,45 @@ def Questao1(win):
     bruteForce(win,coords)   
     return 0
 
+def Questao3(win):
+    coords = readInputFromFile()
+    bruteForce(win,coords)
+    return 0
+
+def MontarCasosTeste(win):
+    coords = readInputFromFile(str(input("Entre com o nome do arquivo :")))
+    d,o,w = calcTrapezios(coords)    
+    if DEBUG:
+        print(f'LARGURA -> {w}')
+        print(f'DESPERDICIO -> {d}')
+    rect = createRectangle(w,TOP_Y)
+    rect.setOutline(VERDE)
+    rect.draw(win)
+    for i in o:
+        if DEBUG:
+            print(f'AREA TRAPEZIO {i.getCoords()} == {i.getArea()}')
+        i.poly.draw(win)    
+    return 0
+
+def readInputFromFile(file=""):
+    if file != "":
+        arq = open(file)
+    else:
+        arq = open("in.txt")
+    coords = []
+    lines = [line.strip() for line in arq.readlines()]
+    n = lines[0]
+    for i in lines[1:]:
+        coords.append(i.split(' '))
+    arq.close()
+    return coords
 
 def main():
     win = GraphWin("My Window", 500, 500)
     win.setBackground(color_rgb(0, 0, 0))
     
-    Questao1(win)
+    # MontarCasosTeste(win)
+    Questao3(win)
     
     win.getMouse()
     win.close()
