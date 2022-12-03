@@ -178,12 +178,25 @@ def readInputFromFile(file=""):
     arq.close()
     return coords
 
+def Questao4():
+    return 0
+
 def main():
+    
     win = GraphWin("My Window", 500, 500)
     win.setBackground(color_rgb(0, 0, 0))
+    op = input("Opção -->> \n[Q01 = 0]\n[Q03 = 1]\n[Q04 = 2]\n[Q05 = 3]\n[TESTE = 4]\n : ")
     
-    # MontarCasosTeste(win)
-    Questao3(win)
+    if op == 0:
+        Questao1(win) 
+    elif op == 1:
+        Questao3(win)
+    elif op == 2:
+       pass 
+    elif op == 3:
+        Questao4(win)
+    elif op == 4:
+        MontarCasosTeste(win)
     
     win.getMouse()
     win.close()
