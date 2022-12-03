@@ -60,18 +60,6 @@ def createRectangle(width, init):
 
 
 '''
-Lê entrada de coordenadas
-n : numero de elementos (trapezios)
-coords[] : Lista de n elementos contendo x1, x2 e x3 
-'''
-def readInput():
-    n = input() 
-    coords = []
-    for i in range(int(n)): 
-        coords.append(input().split(' '))
-    return coords
-
-'''
 Calcula posição dos trapezios 
 considerando um tecido vazio
     traps -> lista de coordenadas dos traps
@@ -146,6 +134,7 @@ def Questao1(win):
     return 0
 
 def Questao3(win):
+    print("QUESTAO 3")
     coords = readInputFromFile()
     bruteForce(win,coords)
     return 0
@@ -165,19 +154,6 @@ def MontarCasosTeste(win):
         i.poly.draw(win)    
     return 0
 
-def readInputFromFile(file=""):
-    if file != "":
-        arq = open(file)
-    else:
-        arq = open("in.txt")
-    coords = []
-    lines = [line.strip() for line in arq.readlines()]
-    n = lines[0]
-    for i in lines[1:]:
-        coords.append(i.split(' '))
-    arq.close()
-    return coords
-
 def Questao4():
     return 0
 
@@ -185,7 +161,7 @@ def main():
     
     win = GraphWin("My Window", 500, 500)
     win.setBackground(color_rgb(0, 0, 0))
-    op = input("Opção -->> \n[Q01 = 0]\n[Q03 = 1]\n[Q04 = 2]\n[Q05 = 3]\n[TESTE = 4]\n : ")
+    op = int(input("Opção -->> \n[Q01 = 0]\n[Q03 = 1]\n[Q04 = 2]\n[Q05 = 3]\n[TESTE = 4]\n : "))
     
     if op == 0:
         Questao1(win) 
