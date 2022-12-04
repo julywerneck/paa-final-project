@@ -52,11 +52,11 @@ class Trapezium():
             p3 = Point(p4.getX() + x3 + x2, BOTTOM_Y)
 
         if DEBUG:
-            print(f'TRAPEZIO {self.get_coords()} -->> ')
-            print(f'\tP1({p1.getX()},{p1.getY()})')
-            print(f'\tP2({p2.getX()},{p2.getY()})')
-            print(f'\tP3({p3.getX()},{p3.getY()})')
-            print(f'\tP4({p4.getX()},{p4.getY()})')
+            print(f'\tTRAPEZIO {self.get_coords()} -->> ')
+            print(f'\t\tP1({p1.getX()},{p1.getY()})')
+            print(f'\t\tP2({p2.getX()},{p2.getY()})')
+            print(f'\t\tP3({p3.getX()},{p3.getY()})')
+            print(f'\t\tP4({p4.getX()},{p4.getY()})')
 
         return Polygon(p1, p2, p3, p4)
 
