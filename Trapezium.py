@@ -31,9 +31,8 @@ class Trapezium():
 
     def create_polygon(self, x1, x2, x3, limT, limB):
         inc = (limT - limB)
-        print(inc)
         if x3 > 0:
-            if (inc < 0):
+            if (inc < 0) and (abs(inc) > x3):
                 p4 = Point(limB, BOTTOM_Y)
                 p1 = Point(p4.getX() - x3, TOP_Y)
             else:
