@@ -5,8 +5,6 @@ from utils import *
 Algoritmo de Força bruta
 @params: win -> tela do programa, coords -> lista de coordenadas recebidas
 """
-
-
 def bruteForce(win, coords):
     desp = []  # desperdícios
     ordem = []  # ordem de peças

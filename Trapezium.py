@@ -30,15 +30,25 @@ class Trapezium():
     """
 
     def create_polygon(self, x1, x2, x3, limT, limB):
+        inc = (limT - limB)
+        print(inc)
         if x3 > 0:
-            p1 = Point(limT, TOP_Y)
+            if (inc < 0):
+                p4 = Point(limB, BOTTOM_Y)
+                p1 = Point(p4.getX() - x3, TOP_Y)
+            else:
+                p1 = Point(limT, TOP_Y)
+                p4 = Point(p1.getX() + x3, BOTTOM_Y)
             p2 = Point(p1.getX() + x1, TOP_Y)
-            p4 = Point(p1.getX() + x3, BOTTOM_Y)
             p3 = Point(p4.getX() + x2, BOTTOM_Y)
         elif x3 < 0:
             x3 = abs(x3)
-            p4 = Point(limB, BOTTOM_Y)
-            p1 = Point(p4.getX() + x3, TOP_Y)
+            if x3 < (inc):
+                p1 = Point(limT, TOP_Y)
+                p4 = Point(p1.getX() - x3, BOTTOM_Y)
+            else:
+                p4 = Point(limB, BOTTOM_Y)
+                p1 = Point(p4.getX() + x3, TOP_Y)
             p2 = Point(p1.getX() + x1, TOP_Y)
             p3 = Point(p4.getX() + x3 + x2, BOTTOM_Y)
 
