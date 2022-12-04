@@ -15,7 +15,6 @@ def read_input_from_file(file=""):
         arq = open("in.txt")
     coords = []
     lines = [line.strip() for line in arq.readlines()]
-    # n = lines[0]
     for i in lines[1:]:
         coords.append(i.split(' '))
     arq.close()
