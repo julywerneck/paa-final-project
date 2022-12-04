@@ -2,15 +2,14 @@ from Trapezium import *
 from utils import *
 
 '''
-Calcula posição dos trapezios
-considerando um tecido vazio
+Calcula trapézios no tecido
+@params:
     traps -> lista de coordenadas dos traps
-    return <- desperdício de tecido,
-            ordem dos trapezios,
-            largura necessária para atual ordem de peças
+@return:
+    desperdício de tecido,
+    ordem dos trapezios,
+    largura necessária para atual ordem de peças
 '''
-
-
 def calc_trapezoids(traps):
     limT = 0
     limB = 0
@@ -36,12 +35,11 @@ def calc_trapezoids(traps):
 
 """
 Calcula desperdício de tecido
-    rect_area -> area do tecido utilizado
+@params: rect_area -> area do tecido utilizado
     traps -> lista contendo os trapezios no tecido
-    return <- area do tecido - area dos trapezios
+@return:
+    area do tecido - area dos trapezios
 """
-
-
 def calc_waste(rect_area, traps):
     area_traps = 0
     for i in traps:
@@ -52,9 +50,11 @@ def calc_waste(rect_area, traps):
 
 """
 Calcula todas as possíveis ordens das peças
+@params:
+    p -> lista de coordenadas 
+@return:
+    lista contendo todas as permutações
 """
-
-
 def calc_permutations(p):
     if len(p) == 0:
         return []
@@ -73,11 +73,13 @@ def calc_permutations(p):
 
 
 '''
-Cria retangulo no centro da tela
-com base na width e init das peças 
+Cria retangulo com base na width e init das peças 
+@params:
+    width -> largura do retângulo
+    init -> ponto de início 
+@return:
+    retângulo criado
 '''
-
-
 def create_rectangle(width, init):
     max_height = init + 100
     max_width = width - 1

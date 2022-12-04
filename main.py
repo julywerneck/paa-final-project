@@ -44,14 +44,14 @@ def create_test_cases(win):
     rect.draw(win)
     for i in o:
         if DEBUG:
-            print(f'AREA TRAPEZIO {i.getCoords()} == {i.getArea()}')
+            print(f'AREA TRAPEZIO {i.get_coords()} == {i.get_area()}')
         i.poly.draw(win)
     return 0
 
 
 def main():
 
-    win = GraphWin("My Window", 500, 500)
+    win = GraphWin("Trabalho de PAA", 500, 500)
     win.setBackground(color_rgb(0, 0, 0))
     op = int(input(
         "Opção -->> \n[Q01 = 0]\n[Q03 = 1]\n[Q04 = 2]\n[Q05 = 3]\n[TESTE = 4]\n : "))
