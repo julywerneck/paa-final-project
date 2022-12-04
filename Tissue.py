@@ -84,3 +84,19 @@ def create_rectangle(width, init):
     p1 = Point(max_width, max_height)
     p2 = Point(1, init)
     return Rectangle(p1, p2)
+
+
+def insert_trapezium(lists, coords, limB, limT, first_x):
+    x1, x2, x3 = coords[0], coords[1], coords[2]
+    t = Trapezium(float(x1), float(x2), float(x3), limT, limB)
+    lists.append(t)
+    limT = t.poly.getPoints()[1].getX()
+    limB = t.poly.getPoints()[2].getX()
+    if len(lists) == 1:
+        first_x = min(t.poly.getPoints()[
+            0].getX(), t.poly.getPoints()[3].getX())
+    last_x = max(t.poly.getPoints()[
+        1].getX(), t.poly.getPoints()[2].getX())
+    w = last_x - first_x
+    waste = calc_waste(float(w*HEIGHT), lists)
+    return limB, limT, waste, w, first_x, t

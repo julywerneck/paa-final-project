@@ -2,6 +2,7 @@ from graphics import *
 from Tissue import *
 from utils import *
 from bruteForce import bruteForce
+from branchAndBound import branch_and_bound
 
 """
 TODO :
@@ -25,6 +26,13 @@ def question_3(win):
     return 0
 
 
+def question_4(win):
+    print("questao 4")
+    coords = read_input_from_file()
+    branch_and_bound(win, coords)
+    return 0
+
+
 def create_test_cases(win):
     coords = read_input_from_file(str(input("Entre com o nome do arquivo :")))
     d, o, w = calc_trapezoids(coords)
@@ -38,10 +46,6 @@ def create_test_cases(win):
         if DEBUG:
             print(f'AREA TRAPEZIO {i.getCoords()} == {i.getArea()}')
         i.poly.draw(win)
-    return 0
-
-
-def question_4():
     return 0
 
 
