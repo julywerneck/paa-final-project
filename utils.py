@@ -5,7 +5,7 @@ TOP_Y = 20
 BOTTOM_Y = 120
 HEIGHT = 100
 VERDE = color_rgb(0, 100, 0)
-DEBUG = False
+DEBUG = True
 
 
 def read_input_from_file(file=""):
