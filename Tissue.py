@@ -87,6 +87,8 @@ def create_rectangle(width, init):
 
 
 def insert_trapezium(lists, coords, limB, limT, first_x):
+    win = GraphWin("My Window", 500, 500)
+    win.setBackground(color_rgb(0, 0, 0))
     x1, x2, x3 = coords[0], coords[1], coords[2]
     t = Trapezium(float(x1), float(x2), float(x3), limT, limB)
     lists.append(t)
@@ -97,6 +99,26 @@ def insert_trapezium(lists, coords, limB, limT, first_x):
             0].getX(), t.poly.getPoints()[3].getX())
     last_x = max(t.poly.getPoints()[
         1].getX(), t.poly.getPoints()[2].getX())
+    for i in lists:
+        i.poly.draw(win)
+    win.getMouse()
+    win.close()
     w = last_x - first_x
     waste = calc_waste(float(w*HEIGHT), lists)
-    return limB, limT, waste, w, first_x, t
+    return limB, limT, waste, w, first_x
+
+def insert_trapezium_teste(lists, coords, limB, limT):
+    win = GraphWin("My Window", 500, 500)
+    win.setBackground(color_rgb(0, 0, 0))
+    x1, x2, x3 = coords[0], coords[1], coords[2]
+    t = Trapezium(float(x1), float(x2), float(x3), limT, limB)
+    lists.append(t)
+    limT = t.poly.getPoints()[1].getX()
+    limB = t.poly.getPoints()[2].getX()
+    for i in lists:
+        i.poly.draw(win)
+    win.getMouse()
+    win.close()
+
+    waste = calc_waste(float(210*HEIGHT), lists)
+    return limB, limT, waste
