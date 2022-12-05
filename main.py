@@ -4,7 +4,9 @@ from utils import *
 from bruteForce import bruteForce
 from branchAndBound import branch_and_bound
 from heuristic import heuristic
+from Color import COLOR
 import time
+
 
 """
 TODO :
@@ -31,10 +33,11 @@ def question_3(win):
 
 
 def question_4(win):
-    print("questao 4")
+    print(COLOR.HEADER+"[ INICIO BRANCH AND BOUND ]"+COLOR.ENDC)
     coords = read_input_from_file(str(input("Entre com o nome do arquivo :")))
     start = time.time()
     branch_and_bound(win, coords)
+    print(COLOR.fa)
     return (time.time() - start)
 
 
@@ -55,12 +58,18 @@ def create_test_cases(win):
     return 0
 
 
-def main():
-
+def menu():
     win = GraphWin("Trabalho de PAA", 600, 600)
     win.setBackground(color_rgb(0, 0, 0))
-    op = int(input(
-        "Opção -->> \n[Q01 = 0]\n[Q03(Força Bruta) = 1]\n[Q04(Branch and Bound) = 2]\n[Q05(Heurística) = 3]\n[TESTE = 4]\n : "))
+    print(COLOR.HEADER+"=== TRABALHO FINAL PAA ==="+COLOR.ENDC)
+    print("- July Ferreira Murta Werneck")
+    print("- Sofia Bhering")
+    print("- Thiago Amado Costa\n")
+    print(COLOR.OKGREEN+"TECNICA PARA EXECUCAO ====="+COLOR.ENDC)
+    teste_string = (COLOR.FAIL+"[Teste = 4]"+COLOR.ENDC)
+    print("[Força Bruta = 1]\n[Branch and Bound = 2]\n[Heurística = 3]\n"+teste_string+"\n")
+    input_string = (COLOR.OKBLUE+"SUA ESCOLHA: "+COLOR.ENDC)
+    op = int(input(input_string))
 
     if op == 0:
         question_1(win)
@@ -75,51 +84,6 @@ def main():
 
     win.getMouse()
     win.close()
-
-
-main()
-
-
-def menu():
-    print(COLOR.HEADER+"=== Algoritmo de Tomasulo ==="+COLOR.ENDC)
-    print("- Gustavo Torres Bretas Alves")
-    print("- Maria Fernanda Oliveira Guimarães")
-    print("- Maria Luiza Raso")
-    print("- Rafael Lopes Murta")
-    print("- Yan Silva Dumont")
-    print(COLOR.OKBLUE+"=========== Configurações: ============"+COLOR.ENDC)
-
-    debug = input("- Debug? (s/n) - Enter para não: ")
-    status_avancado = input(
-        "- Status avançado? [Mostrar Registradores e Celulas de Memoria] (s/n) - Enter para não: ")
-    arquivo = input("- Arquivo de entrada? - Enter para o testes/input.txt: ")
-
-    debug = debug.lower()
-    status_avancado = status_avancado.lower()
-    yes = ["s", "y", "sim", "yes"]
-
-    if debug in yes:
-        debug = True
-    else:
-        debug = False
-
-    if status_avancado in yes:
-        status_avancado = True
-    else:
-        status_avancado = False
-
-    if(arquivo == ""):
-
-        arquivo = "tomasulo-new/input.txt"
-
-    try:
-        inputFile = open(arquivo)
-    except:
-        print(COLOR.FAIL+"Arquivo de leitura não encontrado"+COLOR.ENDC)
-        sys.exit()
-
-    instrucoes = interpretador(inputFile)
-    Tomasulo(instrucoes, debug, status_avancado).run()
 
 
 # Função Main
