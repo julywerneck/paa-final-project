@@ -13,6 +13,7 @@ class Tissue():
         self.waste = 0
         self.width = 0
         self.trap_order = []
+        self.coords_order = coords
         if coords:
             self.calc_trapezoids(coords)
 
@@ -45,9 +46,12 @@ class Tissue():
             self.last_x = 0
 
     '''
-    Calcula desperdício atual do tecido
+    Calcula desperdício de tecido
+    @params: rect_area -> area do tecido utilizado
+        traps -> lista contendo os trapezios no tecido
+    @return:
+        area do tecido - area dos trapezios
     '''
-
     def calc_waste(self):
         self.width = self.last_x - self.first_x
         area_traps = 0
@@ -74,7 +78,6 @@ class Tissue():
     '''
     Insere n trapézios no tecido
     '''
-
     def calc_trapezoids(self, coords):
         if DEBUG:
             print(f'COORDS -> {coords}')
@@ -100,37 +103,6 @@ class Tissue():
             i.poly.draw(win)
 
 
-"""
-Calcula desperdício de tecido
-@params: rect_area -> area do tecido utilizado
-    traps -> lista contendo os trapezios no tecido
-@return:
-    area do tecido - area dos trapezios
-"""
-
-
-def calc_waste(rect_area, traps):
-    area_traps = 0
-    for i in traps:
-        area_traps += i.get_area()
-
-    return rect_area - area_traps
-
-
-def permutation(p, size, generated_p):
-    if size == 1:
-        generated_p.append(p.copy())
-        return
-        
-    for i in range(size):
-        permutation(p,size-1,generated_p)
-        
-        if size % 2 == 1:
-            p[0], p[size-1] = p[size-1], p[0]
-        else:
-            p[i], p[size-1] = p[size-1], p[i]
-
-
 
 '''
 Cria retangulo com base na width e init das peças 
@@ -146,42 +118,3 @@ def create_rectangle(width, init):
     p1 = Point(max_width, max_height)
     p2 = Point(1, init)
     return Rectangle(p1, p2)
-
-
-def insert_trapezium(lists, coords, limB, limT, first_x):
-    win = GraphWin("My Window", 500, 500)
-    win.setBackground(color_rgb(0, 0, 0))
-    x1, x2, x3 = coords[0], coords[1], coords[2]
-    t = Trapezium(float(x1), float(x2), float(x3), limT, limB)
-    lists.append(t)
-    limT = t.poly.getPoints()[1].getX()
-    limB = t.poly.getPoints()[2].getX()
-    if len(lists) == 1:
-        first_x = min(t.poly.getPoints()[
-            0].getX(), t.poly.getPoints()[3].getX())
-    last_x = max(t.poly.getPoints()[
-        1].getX(), t.poly.getPoints()[2].getX())
-    for i in lists:
-        i.poly.draw(win)
-    win.getMouse()
-    win.close()
-    w = last_x - first_x
-    waste = calc_waste(float(w*HEIGHT), lists)
-    return limB, limT, waste, w, first_x
-
-
-def insert_trapezium_teste(lists, coords, limB, limT):
-    win = GraphWin("My Window", 500, 500)
-    win.setBackground(color_rgb(0, 0, 0))
-    x1, x2, x3 = coords[0], coords[1], coords[2]
-    t = Trapezium(float(x1), float(x2), float(x3), limT, limB)
-    lists.append(t)
-    limT = t.poly.getPoints()[1].getX()
-    limB = t.poly.getPoints()[2].getX()
-    for i in lists:
-        i.poly.draw(win)
-    win.getMouse()
-    win.close()
-
-    waste = calc_waste(float(210*HEIGHT), lists)
-    return limB, limT, waste

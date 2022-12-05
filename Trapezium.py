@@ -15,6 +15,7 @@ class Trapezium():
         self.poly = polygon
         self.baseT = points[1].getX() - points[0].getX()  # base Top
         self.baseB = points[2].getX() - points[3].getX()  # base Bottom
+        self.print_bases()
 
     def get_coords(self):
         return [self.x1, self.x2, self.x3]
@@ -22,6 +23,10 @@ class Trapezium():
     def get_area(self):
         return ((self.baseB + self.baseT) * HEIGHT) / 2
 
+    def print_bases(self):
+        if DEBUG:
+            print(f'\t\t\tBASE TOP = {self.baseT}, BASE BOTTOM = {self.baseB}, AREA = {self.get_area()}')
+    
     """
     @params: x1, x2, x3 -> coordenadas de entrada
             limT -> coordenada limite de X TOP

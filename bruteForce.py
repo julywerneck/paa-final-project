@@ -1,39 +1,34 @@
-from Tissue import permutation, Tissue
+from Tissue import Tissue
 from utils import *
 
 """
 Algoritmo de Força bruta
 @params: win -> tela do programa, coords -> lista de coordenadas recebidas
 """
+def permutation_brute_force(p, size, generated_p):
+    if size == 1:
+        generated_p.append(Tissue(0,p.copy()))
+        return
+        
+    for i in range(size):
+        permutation_brute_force(p,size-1,generated_p)
+        
+        if size % 2 == 1:
+            p[0], p[size-1] = p[size-1], p[0]
+        else:
+            p[i], p[size-1] = p[size-1], p[i]
+
+
 def bruteForce(win, coords):
     n = len(coords)
     tissues = []
-
-    permuts = []
-    permutation(coords, n, permuts)  
-    
-    print(F'PERMUTAÇÕES GERADAS = {len(permuts)}')
-    
-    tissues.append(Tissue(n, permuts[0]))
-    current_waste = tissues[0].waste
-    index_best_order = 0
-
-    if DEBUG:
-        print(
-            f'index = {0}, waste = {tissues[0].waste}, coords = {permuts[0]}')
-
-    print('PERCORRENDO PERMUTAÇÕES')
-    for x, i in enumerate(permuts[1:]):  # possibilidades
-        tissues.append(Tissue(n, i))
-        if DEBUG:
-            print(
-                f'index = {x+1}, waste = {tissues[x+1].waste}, coords = {permuts[x+1]}')
-        if (tissues[x+1].waste < current_waste):
-            current_waste = tissues[x + 1].waste
-            index_best_order = x + 1
-
-    print(
-        f'MENOR DESPERDÍCIO DE TECIDO -->> {tissues[index_best_order].waste}')
-    tissues[index_best_order].draw_tissue(win)
-
+    permutation_brute_force(coords,n,tissues)
+    print(f'NUMERO DE PERMS GERADASS = {len(tissues)}')
+    best_tissue = tissues[0] 
+    for x,i in enumerate(tissues[1:]):
+        if tissues[x+1].waste < best_tissue.waste:
+            best_tissue = tissues[x+1] 
+         
+    print(f'MENOR DESPERDÍCIO DE TECIDO --->> {best_tissue.waste}')
+    best_tissue.draw_tissue(win)
     return 0

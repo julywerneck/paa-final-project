@@ -82,7 +82,8 @@ def menu():
         time = question_4(win)
         print("--- %.4f seconds ---" % time)
     elif op == 3:
-        question_5(win)
+        time = question_5(win)
+        print("--- %.4f seconds ---" % time)
     elif op == 4:
         create_test_cases(win)
 
