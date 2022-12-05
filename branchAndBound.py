@@ -20,34 +20,40 @@ def find_best_trap(coords, min_waste, tissue):
 
 
 resposta = 0
-tissue_final = Tissue(3)
+best_order = []
 
 
-def find_best_trap_new(coords, min_waste, tissue):
+def find_best_trap_new(coords, tissue):
     global resposta
-    global tissue_final
+    global best_order
+
     if(coords == []):
-        print("entrei no if")
-        if min_waste < resposta:
-            resposta = min_waste
-            tissue_final = tissue
+        if tissue.waste < resposta:
+            best_order = []
+            resposta = tissue.waste
+            for i in tissue.trap_order:
+                best_order.append(i.get_coords())
             return
     else:
-        if(resposta >= min_waste):
-            print("entrei if")
+        if(resposta >= tissue.waste):
             for i in range(len(coords)):
                 element = coords.pop(0)
                 tissue.calc_trapezium(element)
-                find_best_trap_new(coords, min_waste, tissue)
-                coords.insert(0, element)
+                find_best_trap_new(
+                    coords, tissue)
+                coords.append(element)
                 tissue.remove_trapezium()
 
 
 def branch_and_bound(win, coords):
     tissue = Tissue(3, coords)
+    global resposta
+    global best_order
     resposta = tissue.waste
     find_best_trap_new(
-        coords, tissue.waste, Tissue(3))
+        coords, Tissue(3))
     print(f'MENOR DESPERDÍCIO DE TECIDO -->> {resposta}')
+    print(best_order)
+    tissue_final = Tissue(3, best_order)
     tissue_final.draw_tissue(win)
     return 0

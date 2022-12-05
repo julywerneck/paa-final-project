@@ -33,16 +33,17 @@ def question_4(win):
     branch_and_bound(win, coords)
     return 0
 
+
 def question_5(win):
     print("questao 5")
     coords = read_input_from_file()
-    heuristic(coords,win)
-    
+    heuristic(coords, win)
+
 
 def create_test_cases(win):
     coords = read_input_from_file(str(input("Entre com o nome do arquivo :")))
-    tissue = Tissue(len(coords),coords)
-    tissue.draw_tissue(win,True)
+    tissue = Tissue(len(coords), coords)
+    tissue.draw_tissue(win, True)
     print(f'LARGURA -> {tissue.width}')
     print(f'DESPERDICIO -> {tissue.waste}')
     return 0
@@ -50,7 +51,7 @@ def create_test_cases(win):
 
 def main():
 
-    win = GraphWin("Trabalho de PAA", 500, 500)
+    win = GraphWin("Trabalho de PAA", 600, 600)
     win.setBackground(color_rgb(0, 0, 0))
     op = int(input(
         "Opção -->> \n[Q01 = 0]\n[Q03(Força Bruta) = 1]\n[Q04(Branch and Bound) = 2]\n[Q05(Heurística) = 3]\n[TESTE = 4]\n : "))
