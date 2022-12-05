@@ -12,7 +12,7 @@ def read_input_from_file(file=""):
     if file != "":
         arq = open(file)
     else:
-        arq = open("in.txt")
+        arq = open("input/in.txt")
     coords = []
     lines = [line.strip() for line in arq.readlines()]
     for i in lines[1:]:
