@@ -65,7 +65,7 @@ def menu():
     win.setBackground(color_rgb(0, 0, 0))
     print(COLOR.HEADER+"=== TRABALHO FINAL PAA ==="+COLOR.ENDC)
     print("- July Ferreira Murta Werneck")
-    print("- Sofia Bhering")
+    print("- Sofia Franca Campos Bhering")
     print("- Thiago Amado Costa\n")
     print(COLOR.OKGREEN+"TECNICA PARA EXECUCAO ====="+COLOR.ENDC)
     teste_string = (COLOR.FAIL+"[Teste = 4]"+COLOR.ENDC)
@@ -76,9 +76,11 @@ def menu():
     if op == 0:
         question_1(win)
     elif op == 1:
-        question_3(win)
+        time = question_3(win)
+        print("--- %.4f seconds ---" % time)
     elif op == 2:
-        question_4(win)
+        time = question_4(win)
+        print("--- %.4f seconds ---" % time)
     elif op == 3:
         question_5(win)
     elif op == 4:

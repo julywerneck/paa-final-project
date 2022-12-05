@@ -117,30 +117,19 @@ def calc_waste(rect_area, traps):
     return rect_area - area_traps
 
 
-"""
-Calcula todas as possíveis ordens das peças
-@params:
-    p -> lista de coordenadas 
-@return:
-    lista contendo todas as permutações
-"""
+def permutation(p, size, generated_p):
+    if size == 1:
+        generated_p.append(p.copy())
+        return
+        
+    for i in range(size):
+        permutation(p,size-1,generated_p)
+        
+        if size % 2 == 1:
+            p[0], p[size-1] = p[size-1], p[0]
+        else:
+            p[i], p[size-1] = p[size-1], p[i]
 
-
-def calc_permutations(p):
-    if len(p) == 0:
-        return []
-    elif len(p) == 1:
-        return [p]
-
-    _p = []
-
-    for i in range(len(p)):
-        aux = p[i]
-        resto_p = p[:i] + p[i+1:]
-        for j in calc_permutations(resto_p):
-            _p.append([aux] + j)
-
-    return _p
 
 
 '''
@@ -151,8 +140,6 @@ Cria retangulo com base na width e init das peças
 @return:
     retângulo criado
 '''
-
-
 def create_rectangle(width, init):
     max_height = init + 100
     max_width = width - 1
