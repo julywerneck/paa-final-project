@@ -40,7 +40,7 @@ class Trapezium():
                 p4 = Point(p1.getX() + x3, BOTTOM_Y)
             p2 = Point(p1.getX() + x1, TOP_Y)
             p3 = Point(p1.getX() + x2, BOTTOM_Y)
-        elif x3 < 0:
+        elif x3 <= 0:
             x3 = abs(x3)
             if x3 < (inc):
                 p1 = Point(limT, TOP_Y)
