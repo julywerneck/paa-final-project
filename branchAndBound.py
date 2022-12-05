@@ -6,24 +6,11 @@ from Trapezium import *
 Algoritmo de Força bruta
 @params: win -> tela do programa, coords -> lista de coordenadas recebidas
 """
-
-
-def find_best_trap(coords, min_waste, tissue):
-    if(len(coords) == 0):
-        return min_waste, tissue
-    else:
-        for coord in coords:
-            element = coord
-            tissue.calc_trapezium(element)
-            if(tissue.waste <= min_waste):
-                pass
-
-
 resposta = 0
 best_order = []
 
 
-def find_best_trap_new(coords, tissue):
+def find_best_trap(coords, tissue):
     global resposta
     global best_order
 
@@ -39,7 +26,7 @@ def find_best_trap_new(coords, tissue):
             for i in range(len(coords)):
                 element = coords.pop(0)
                 tissue.calc_trapezium(element)
-                find_best_trap_new(
+                find_best_trap(
                     coords, tissue)
                 coords.append(element)
                 tissue.remove_trapezium()
@@ -50,7 +37,7 @@ def branch_and_bound(win, coords):
     global resposta
     global best_order
     resposta = tissue.waste
-    find_best_trap_new(
+    find_best_trap(
         coords, Tissue(3))
     print(f'MENOR DESPERDÍCIO DE TECIDO -->> {resposta}')
     print(best_order)

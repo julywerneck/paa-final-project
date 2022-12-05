@@ -10,8 +10,10 @@ import time
 
 """
 TODO :
-    -> Arrumar bug que o trapezio fica um pouco maior que o outline do retangulo
-    -> classe para atual ordem de peças (?)
+    -> Fazer heuristica
+    -> Estabelecer casos testes de forma mais estruturada 
+    -> Arrumar Menu com cores mais bonitas
+    -> Definir paleta para peças
 """
 
 
@@ -33,11 +35,11 @@ def question_3(win):
 
 
 def question_4(win):
-    print(COLOR.HEADER+"[ INICIO BRANCH AND BOUND ]"+COLOR.ENDC)
+    print(COLOR.OKBLUE+"\n[ INICIO BRANCH AND BOUND ]\n"+COLOR.ENDC)
     coords = read_input_from_file(str(input("Entre com o nome do arquivo :")))
     start = time.time()
     branch_and_bound(win, coords)
-    print(COLOR.fa)
+    print(COLOR.OKBLUE+f"TEMPO DE EXECUCAO: {time.time() - start}"+COLOR.ENDC)
     return (time.time() - start)
 
 
@@ -59,7 +61,7 @@ def create_test_cases(win):
 
 
 def menu():
-    win = GraphWin("Trabalho de PAA", 600, 600)
+    win = GraphWin("Trabalho de PAA", 1280, 600)
     win.setBackground(color_rgb(0, 0, 0))
     print(COLOR.HEADER+"=== TRABALHO FINAL PAA ==="+COLOR.ENDC)
     print("- July Ferreira Murta Werneck")
@@ -68,7 +70,7 @@ def menu():
     print(COLOR.OKGREEN+"TECNICA PARA EXECUCAO ====="+COLOR.ENDC)
     teste_string = (COLOR.FAIL+"[Teste = 4]"+COLOR.ENDC)
     print("[Força Bruta = 1]\n[Branch and Bound = 2]\n[Heurística = 3]\n"+teste_string+"\n")
-    input_string = (COLOR.OKBLUE+"SUA ESCOLHA: "+COLOR.ENDC)
+    input_string = (COLOR.BOLD+"SUA ESCOLHA: "+COLOR.ENDC)
     op = int(input(input_string))
 
     if op == 0:
