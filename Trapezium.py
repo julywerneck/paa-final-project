@@ -39,7 +39,7 @@ class Trapezium():
                 p1 = Point(limT, TOP_Y)
                 p4 = Point(p1.getX() + x3, BOTTOM_Y)
             p2 = Point(p1.getX() + x1, TOP_Y)
-            p3 = Point(p4.getX() + x2, BOTTOM_Y)
+            p3 = Point(p1.getX() + x2, BOTTOM_Y)
         elif x3 < 0:
             x3 = abs(x3)
             if x3 < (inc):
@@ -49,7 +49,7 @@ class Trapezium():
                 p4 = Point(limB, BOTTOM_Y)
                 p1 = Point(p4.getX() + x3, TOP_Y)
             p2 = Point(p1.getX() + x1, TOP_Y)
-            p3 = Point(p4.getX() + x3 + x2, BOTTOM_Y)
+            p3 = Point(p1.getX() + x2, BOTTOM_Y)
 
         if DEBUG:
             print(f'\tTRAPEZIO {self.get_coords()} -->> ')
