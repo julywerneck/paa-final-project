@@ -8,22 +8,13 @@ from Color import COLOR
 import time
 
 
-"""
-TODO :
-    -> Fazer heuristica
-    -> Estabelecer casos testes de forma mais estruturada 
-    -> Arrumar Menu com cores mais bonitas
-    -> Definir paleta para peças
-"""
-
-
 def question_1(win):
     coords = []
     coords.append(input().split(' '))
     coords.append(input().split(' '))
     start = time.time()
     bruteForce(win, coords)
-    return (time.time() - start())
+    return (time.time() - start)
 
 
 def question_3(win):
@@ -91,7 +82,6 @@ def menu():
     win.close()
 
 
-# Função Main
 def main():
     menu()
 
