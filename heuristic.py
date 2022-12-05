@@ -49,8 +49,6 @@ def define_inclination_dir(coord):
 
 
 def heuristic_dir_esq(coords,win):
-    coords_inc = []
-    
     coords_inc_dir = list(filter(define_inclination_dir, coords))
     coords_inc_esq = list(filter(define_inclination_esq, coords))
     
@@ -71,29 +69,5 @@ def heuristic_dir_esq(coords,win):
     final_tissue.draw_tissue(win)
     return 0
 
-def heuristic_divided(coords,win):
-    n = len(coords)
-    coords_left = coords[:n//2]
-    coords_right = coords[n//2:] 
-    
-    best_order_dir = [] 
-    best_wastes_dir = []
-    best_order_esq = [] 
-    best_wastes_esq = []
-    
-    permutation_heuristic(coords_left, len(coords_left), best_order_esq, best_wastes_esq)
-    permutation_heuristic(coords_right, len(coords_right), best_order_dir, best_wastes_dir)
-    
-    index_best_order_dir = best_wastes_dir.index(min(best_wastes_dir))
-    index_best_order_esq = best_wastes_esq.index(min(best_wastes_esq))
-    final_best_order = best_order_dir[index_best_order_dir] + best_order_esq[index_best_order_esq] 
-    
-    final_tissue = Tissue(0,final_best_order)
-    print(f'MELHOR DESPERDÍCIO DE TECIDO -->> {final_tissue.waste}')
-    final_tissue.draw_tissue(win)
-    
-    return 0
-
 def heuristic(coords,win):
-    # heuristic_dir_esq(coords,win)
-    heuristic_divided(coords,win)
+    heuristic_dir_esq(coords,win)
