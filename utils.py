@@ -10,7 +10,8 @@ DEBUG = False
 
 def read_input_from_file(file=""):
     if file != "":
-        arq = open(file)
+        path = "input/" + file
+        arq = open(path)
     else:
         arq = open("input/in.txt")
     coords = []
