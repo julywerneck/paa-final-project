@@ -24,7 +24,7 @@ def bruteForce(win, coords):
     for x,i in enumerate(permuts[1:]):  # possibilidades
         tissues.append(Tissue(n,i))
         if DEBUG:
-            print(f'index = {x+1}, waste = {tissues[x+1].waste}, coords = {permuts[0]}')
+            print(f'index = {x+1}, waste = {tissues[x+1].waste}, coords = {permuts[x+1]}')
             print(20*'=')
         if (tissues[x+1].waste < current_waste):
             current_waste = tissues[x + 1].waste

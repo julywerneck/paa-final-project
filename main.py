@@ -4,6 +4,7 @@ from utils import *
 from bruteForce import bruteForce
 from branchAndBound import branch_and_bound
 from heuristic import heuristic
+import time
 
 """
 TODO :
@@ -16,28 +17,33 @@ def question_1(win):
     coords = []
     coords.append(input().split(' '))
     coords.append(input().split(' '))
+    start = time.time()
     bruteForce(win, coords)
-    return 0
+    return (time.time() - start())
 
 
 def question_3(win):
     print("question 3")
     coords = read_input_from_file()
+    start = time.time()
     bruteForce(win, coords)
-    return 0
+    return (time.time() - start)
 
 
 def question_4(win):
     print("questao 4")
     coords = read_input_from_file()
+    start = time.time()
     branch_and_bound(win, coords)
-    return 0
+    return (time.time() - start)
 
 
 def question_5(win):
     print("questao 5")
     coords = read_input_from_file()
+    start = time.time()
     heuristic(coords, win)
+    return (time.time() - start)
 
 
 def create_test_cases(win):
