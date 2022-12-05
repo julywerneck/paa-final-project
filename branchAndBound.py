@@ -8,53 +8,46 @@ Algoritmo de Força bruta
 """
 
 
-def find_best_trap(coords, minWaste, listResult, limB, limT, first_x, w):
+def find_best_trap(coords, min_waste, tissue):
     if(len(coords) == 0):
-        return True, listResult, minWaste, w
+        return min_waste, tissue
     else:
-        toInsert = coords.pop(0)
-        _limB, _limT, waste, _w, _first_x = insert_trapezium(
-            listResult, toInsert, limB, limT, first_x)
-        if waste < minWaste:
-            minWaste = waste
-            found, result, best_waste, final_width = find_best_trap(coords, minWaste, listResult,
-                                                                    _limB, _limT, _first_x, _w)
-            if found:
-                return found, result, best_waste, final_width
-        else:
-            coords.append(toInsert)
-            found, result, best_waste, final_width = find_best_trap(coords, minWaste, listResult,
-                                                                    limB, limT, first_x, w)
-            if found:
-                return found, result, best_waste, final_width
+        for coord in coords:
+            element = coord
+            tissue.calc_trapezium(element)
+            if(tissue.waste <= min_waste):
+                pass
+
+
+resposta = 0
+tissue_final = Tissue(3)
 
 
 def find_best_trap_new(coords, min_waste, tissue):
+    global resposta
+    global tissue_final
     if(coords == []):
-        return True, min_waste, tissue
+        print("entrei no if")
+        if min_waste < resposta:
+            resposta = min_waste
+            tissue_final = tissue
+            return
     else:
-        for i in range(len(coords)):
-            print(i)
-            element = coords.pop(0)
-            tissue.calc_trapezium(element)
-            if(tissue.waste <= min_waste):
-                min_waste = tissue.waste
-                f, waste, tissue = find_best_trap_new(
-                    coords.copy(), 100000, tissue)
-                if f:
-                    min_waste = waste
-            else:
+        if(resposta >= min_waste):
+            print("entrei if")
+            for i in range(len(coords)):
+                element = coords.pop(0)
+                tissue.calc_trapezium(element)
+                find_best_trap_new(coords, min_waste, tissue)
+                coords.insert(0, element)
                 tissue.remove_trapezium()
-                f, waste, tissue = find_best_trap_new(
-                    coords.copy(), min_waste, tissue)
-                if f:
-                    min_waste = waste
-        return False, min_waste, tissue
 
 
 def branch_and_bound(win, coords):
-    f, minWaste, tissue = find_best_trap_new(
-        coords, 1000000, Tissue(3))
-    print(f'MENOR DESPERDÍCIO DE TECIDO -->> {minWaste}')
-    tissue.draw_tissue(win)
+    tissue = Tissue(3, coords)
+    resposta = tissue.waste
+    find_best_trap_new(
+        coords, tissue.waste, Tissue(3))
+    print(f'MENOR DESPERDÍCIO DE TECIDO -->> {resposta}')
+    tissue_final.draw_tissue(win)
     return 0
