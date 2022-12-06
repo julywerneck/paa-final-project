@@ -2,23 +2,20 @@ from Tissue import Tissue
 from utils import *
 from Trapezium import *
 
-INC_ESQ = 0
-INC_DIR = 1
-
 def define_inclination(x1,x2,x3):
     if x3 > 0:
         if x1 > (x2 + x3):
-            return INC_DIR 
+            return INC_RIGHT 
         elif x1 < (x2 + x3):
-            return INC_ESQ 
+            return INC_LEFT 
         else:
             return -1
     elif x3 < 0:
         _x3 = abs(x3) 
         if (_x3 + x1) > (_x3 + x2):
-            return INC_DIR
+            return INC_RIGHT 
         elif (_x3 + x1) < (_x3 + x2):
-            return INC_ESQ
+            return INC_LEFT
         else: 
             return -1 
     
@@ -28,7 +25,7 @@ z = 0
 def permutation_heuristic(p, size, generated_p, wastes):
     global z
     if size == 1:
-        t = Tissue(0,p.copy())
+        t = Tissue(p.copy())
         generated_p.append(t.coords_order.copy())
         wastes.append(t.waste)
         return
@@ -42,10 +39,10 @@ def permutation_heuristic(p, size, generated_p, wastes):
             p[i], p[size-1] = p[size-1], p[i]
 
 def define_inclination_esq(coord):
-    return define_inclination(float(coord[0]), float(coord[1]), float(coord[2])) == INC_ESQ
+    return define_inclination(float(coord[0]), float(coord[1]), float(coord[2])) == INC_LEFT
 
 def define_inclination_dir(coord):
-    return define_inclination(float(coord[0]), float(coord[1]), float(coord[2])) == INC_DIR
+    return define_inclination(float(coord[0]), float(coord[1]), float(coord[2])) == INC_RIGHT 
 
 
 def heuristic_dir_esq(coords,win):
@@ -67,6 +64,14 @@ def heuristic_dir_esq(coords,win):
     final_tissue = Tissue(0,final_best_order)
     print(f'MELHOR DESPERDÍCIO DE TECIDO -->> {final_tissue.waste}')
     final_tissue.draw_tissue(win)
+    return 0
+
+
+def heuristic_minwaste(coords,win):
+    tissue = Tissue()
+    
+    
+    
     return 0
 
 def heuristic(coords,win):

@@ -7,6 +7,9 @@ BOTTOM_Y = 120
 HEIGHT = 100
 VERDE = color_rgb(0, 100, 0)
 DEBUG = False
+INC_LEFT = 0
+INC_RIGHT = 1
+INC_RETO = 2
 
 
 def read_input_from_file(file=""):

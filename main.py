@@ -44,7 +44,7 @@ def question_5(win):
 
 def create_test_cases(win):
     coords = read_input_from_file(str(input("Entre com o nome do arquivo :")))
-    tissue = Tissue(len(coords), coords)
+    tissue = Tissue(coords)
     tissue.draw_tissue(win, True)
     print(f'LARGURA -> {tissue.width}')
     print(f'DESPERDICIO -> {tissue.waste}')

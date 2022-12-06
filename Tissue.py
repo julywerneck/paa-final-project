@@ -4,8 +4,7 @@ from utils import *
 
 class Tissue():
 
-    def __init__(self, n, coords=[]):
-        self.n = n
+    def __init__(self, coords=[]):
         self.limT = 0
         self.limB = 0
         self.first_x = 0

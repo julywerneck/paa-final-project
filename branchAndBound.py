@@ -6,23 +6,25 @@ from Trapezium import *
 Algoritmo de Força bruta
 @params: win -> tela do programa, coords -> lista de coordenadas recebidas
 """
-resposta = 0
+best_waste = 0
 best_order = []
-
+podas = 0
 
 def find_best_trap(coords, tissue):
-    global resposta
+    global best_waste
     global best_order
-
+    global podas
+    
     if(coords == []):
-        if tissue.waste < resposta:
+        print(tissue.waste, best_waste)
+        if tissue.waste < best_waste:
             best_order = []
-            resposta = tissue.waste
+            best_waste = tissue.waste
             for i in tissue.trap_order:
                 best_order.append(i.get_coords())
             return
     else:
-        if(resposta >= tissue.waste):
+        if(best_waste > tissue.waste):  # critério de poda
             for i in range(len(coords)):
                 element = coords.pop(0)
                 tissue.calc_trapezium(element)
@@ -30,17 +32,21 @@ def find_best_trap(coords, tissue):
                     coords, tissue)
                 coords.append(element)
                 tissue.remove_trapezium()
+        else:
+            podas += 1
 
 
 def branch_and_bound(win, coords):
-    tissue = Tissue(3, coords)
-    global resposta
+    tissue = Tissue(coords)
+    global best_waste
     global best_order
-    resposta = tissue.waste
+    best_waste = tissue.waste
+    best_order = tissue.coords_order
     find_best_trap(
-        coords, Tissue(3))
-    print(f'MENOR DESPERDÍCIO DE TECIDO -->> {resposta}')
+        coords, Tissue())
+    print(f'MENOR DESPERDÍCIO DE TECIDO -->> {best_waste}')
+    print(f'QUANTIDADE DE RAMOS PODADOS --->> {podas}')
     print(best_order)
-    tissue_final = Tissue(3, best_order)
+    tissue_final = Tissue(best_order)
     tissue_final.draw_tissue(win)
     return 0
