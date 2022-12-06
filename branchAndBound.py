@@ -16,7 +16,6 @@ def find_best_trap(coords, tissue):
     global podas
     
     if(coords == []):
-        print(tissue.waste, best_waste)
         if tissue.waste < best_waste:
             best_order = []
             best_waste = tissue.waste

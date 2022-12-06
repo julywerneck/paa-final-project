@@ -15,10 +15,19 @@ class Trapezium():
         self.poly = polygon
         self.baseT = points[1].getX() - points[0].getX()  # base Top
         self.baseB = points[2].getX() - points[3].getX()  # base Bottom
+        self.left_inclination = self.define_left_inclination() 
+        self.right_inclination = self.define_right_inclination()
         self.print_bases()
-        self.inc_esq = INC_RIGHT if (x3 < 0) else (INC_LEFT if x3 > 0 else INC_RETO)
-        # self.inc_dir = define_inclination(x1,x2,x3) 
 
+    
+    def define_left_inclination(self):
+        return INC_RIGHT if self.x3 < 0 else INC_LEFT if self.x3 > 0 else INC_RETO
+    
+    def define_right_inclination(self):
+        top_x = self.poly.getPoints()[1].getX()
+        bot_x = self.poly.getPoints()[2].getX()
+        return INC_RIGHT if top_x > bot_x else INC_LEFT if top_x < bot_x else INC_RETO
+         
     def get_coords(self):
         return [self.x1, self.x2, self.x3]
 
@@ -27,7 +36,7 @@ class Trapezium():
 
     def print_bases(self):
         if DEBUG:
-            print(f'\t\t\tBASE TOP = {self.baseT}, BASE BOTTOM = {self.baseB}, AREA = {self.get_area()} INCLINATION = {self.inc_esq}')
+            print(f'\t\t\tBASE TOP = {self.baseT}, BASE BOTTOM = {self.baseB}, AREA = {self.get_area()}, LEFT INC = {self.left_inclination}, RIGHT INC = {self.right_inclination}')
     
     """
     @params: x1, x2, x3 -> coordenadas de entrada
@@ -45,8 +54,6 @@ class Trapezium():
             else:
                 p1 = Point(limT, TOP_Y)
                 p4 = Point(p1.getX() + x3, BOTTOM_Y)
-            p2 = Point(p1.getX() + x1, TOP_Y)
-            p3 = Point(p1.getX() + x2, BOTTOM_Y)
         elif x3 <= 0:
             x3 = abs(x3)
             if x3 < (inc):
@@ -55,8 +62,8 @@ class Trapezium():
             else:
                 p4 = Point(limB, BOTTOM_Y)
                 p1 = Point(p4.getX() + x3, TOP_Y)
-            p2 = Point(p1.getX() + x1, TOP_Y)
-            p3 = Point(p1.getX() + x2, BOTTOM_Y)
+        p2 = Point(p1.getX() + x1, TOP_Y)
+        p3 = Point(p1.getX() + x2, BOTTOM_Y)
 
         if DEBUG:
             print(f'\tTRAPEZIO {self.get_coords()} -->> ')
@@ -69,22 +76,3 @@ class Trapezium():
 
     def get_random_color(self):
         return color_rgb(rd.randint(0, 255), rd.randint(0, 255), rd.randint(0, 255))
-
-
-def define_inclination(x1,x2,x3):
-    if x3 > 0:
-        if x1 > (x2 + x3):
-            return INC_RIGHT 
-        elif x1 < (x2 + x3):
-            return INC_LEFT 
-        else:
-            return -1
-    elif x3 < 0:
-        _x3 = abs(x3) 
-        if (_x3 + x1) > (_x3 + x2):
-            return INC_RIGHT 
-        elif (_x3 + x1) < (_x3 + x2):
-            return INC_LEFT
-        else: 
-            return -1 
- 

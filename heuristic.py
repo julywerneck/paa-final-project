@@ -6,20 +6,17 @@ def define_inclination(x1,x2,x3):
     if x3 > 0:
         if x1 > (x2 + x3):
             return INC_RIGHT 
-        elif x1 < (x2 + x3):
-            return INC_LEFT 
         else:
-            return -1
+            return INC_LEFT 
     elif x3 < 0:
         _x3 = abs(x3) 
         if (_x3 + x1) > (_x3 + x2):
             return INC_RIGHT 
-        elif (_x3 + x1) < (_x3 + x2):
+        else:
             return INC_LEFT
-        else: 
-            return -1 
+    else:
+        return INC_RETO
     
-
 
 z = 0
 def permutation_heuristic(p, size, generated_p, wastes):
@@ -44,7 +41,6 @@ def define_inclination_esq(coord):
 def define_inclination_dir(coord):
     return define_inclination(float(coord[0]), float(coord[1]), float(coord[2])) == INC_RIGHT 
 
-
 def heuristic_dir_esq(coords,win):
     coords_inc_dir = list(filter(define_inclination_dir, coords))
     coords_inc_esq = list(filter(define_inclination_esq, coords))
@@ -61,18 +57,11 @@ def heuristic_dir_esq(coords,win):
     index_best_order_esq = best_wastes_esq.index(min(best_wastes_esq))
     final_best_order = best_order_dir[index_best_order_dir] + best_order_esq[index_best_order_esq] 
     
-    final_tissue = Tissue(0,final_best_order)
+    final_tissue = Tissue(final_best_order)
     print(f'MELHOR DESPERDÍCIO DE TECIDO -->> {final_tissue.waste}')
     final_tissue.draw_tissue(win)
     return 0
 
-
-def heuristic_minwaste(coords,win):
-    tissue = Tissue()
-    
-    
-    
-    return 0
 
 def heuristic(coords,win):
     heuristic_dir_esq(coords,win)
