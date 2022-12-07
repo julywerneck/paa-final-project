@@ -1,3 +1,9 @@
+'''
+July Ferreira Murta Werneck - 683595
+Sofia Franca Campos Bhering - 665173
+Thiago Amado Costa - 655537
+'''
+
 from graphics import *
 from Tissue import *
 from utils import *
